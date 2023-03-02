@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-img-top {
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+
+        .aspect-ratio-box {
+            height: 350px; /* adjust as needed */
+            overflow: hidden;
+        }
+
+        .card-body {
+            height: calc(100% - 250px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+
+        @@media (max-width: 768px) {
+            .card-img-top {
+                height: 80%;
+            }
+
+            .card-body {
+                height: 20%;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+   @* <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">Homely Essentials</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+*@
+
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">Homely Essentials</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" action="@Url.Action("AdminHome", "Pages")">
+                <input class="form-control mr-sm-2" name="ItemName" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+    </nav>
+
+
+    <div class="wid">
+        @RenderBody()
+    </div>
+
+
+    <footer class="bg-dark text-light py-3 fixed-bottom">
+        <div class="container">
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <p class="m-0">&copy; 2023 Homely Essentials</p>
+                <p class="m-0">Designed with <span class="text-danger">&hearts;</span> by Navot</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    @*<footer class="bg-dark text-light py-3">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <p class="m-0">&copy; 2023 Homely Essentials</p>
+            <p class="m-0">Designed with <span class="text-danger">&hearts;</span> by Navot</p>
+        </div>
+    </footer>*@
+</body>
+</html>

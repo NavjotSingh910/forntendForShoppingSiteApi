@@ -1,0 +1,71 @@
+﻿@model User
+@{
+
+    ViewData["Title"] = "Registration Page";
+
+}
+
+
+<div class="picture-div order-1 order-md-2"></div>
+<div class="form-div contents row align-items-center justify-content-center order-2 order-md-1">
+
+    <h3>Register to <strong>Homely Essentials</strong></h3>
+    <p class="mb-4">Your ultimate destination for all things home, "Homely Essentials" is a shopping website .</p>
+
+
+    <form method="post" asp-action="RegistrationPage" asp-controller="Registration">
+        @{
+            if (@ViewBag.ErrorMessage != null)
+            {
+
+                <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+
+            }
+        }
+        <div class="form-group first">
+            <label asp-for="Username">User Name</label>
+            <input type="text" asp-for="Username" placeholder="Enter your first name" class="form-control" />
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+       
+        <div class="form-group">
+            <label asp-for="Email">Email</label>
+            <input type="email" asp-for="Email" placeholder="Enter your email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Password</label>
+            
+            <input type="password" asp-for="Password" placeholder="Enter a password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+  
+        <div class="form-group mb-5">
+            <input type="submit" value="Register" class="btn btn-block btn-primary" />
+        </div>
+
+    </form>
+</div>
+
+<script>
+    function equalizeHeights() {
+        var formDiv = document.querySelector(".form-div");
+        var pictureDiv = document.querySelector(".picture-div");
+        pictureDiv.style.height = formDiv.offsetHeight + "px";
+    }
+
+    window.addEventListener("resize", equalizeHeights);
+    window.addEventListener("load", equalizeHeights);
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+        }
+<script src="~/js/jquery-3.3.1.min.js"></script>
+<script src="~/js/popper.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/main.js"></script>
+
+

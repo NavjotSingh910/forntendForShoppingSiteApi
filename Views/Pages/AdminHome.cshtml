@@ -1,0 +1,176 @@
+﻿@model List<Items>
+
+@{
+    ViewData["Title"] = "Home Page  Admin";
+    Layout = "_Layout1";
+}
+
+<style>
+
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .card-img-top {
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+
+    .aspect-ratio-box {
+        height: 350px; /* adjust as needed */
+        overflow: hidden;
+    }
+
+    .card-body {
+        height: calc(100% - 250px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+
+    @@media (max-width: 768px) {
+        .card-img-top {
+            height: 80%;
+        }
+
+        .card-body {
+            height: 20%;
+        }
+    }
+
+
+
+    .card {
+        transition: all 0.3s ease;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+    .card-img-top {
+        filter: brightness(80%);
+        transition: all 0.3s ease;
+    }
+
+    .card:hover .card-img-top {
+        filter: brightness(100%);
+    }
+
+</style>
+
+
+
+<div class="wid">
+    <div class="container mt-4">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4  mb-4">
+                    <div class="card">
+                        <div class="aspect-ratio-box">
+                            <img class="card-img-top img-fluid rounded-top" src="@item.imageSource" alt="Product 1">
+                        </div>
+
+                        <div class="card-body">
+                            <h4 class="card-title">@item.ItemName</h4>
+                            <p class="card-text">$@item.Price</p>
+                            <small class="text-muted">@item.Rating stars</small>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex justify-content-end">
+                                    <form method="post" action="@Url.Action("AdminDeleteItem", "Pages")">
+
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </div>
+
+                                <button class="btn btn-primary">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+            <div class="col-md-4  mb-4">
+
+                <div id="card" class="card btn btn-outline-secondary btn-lg">
+                    <div class="card-body d-flex justify-content-center align-items-center" style="height: 100%;">
+                        <i class="fas fa-plus fa-10x">
+                        </i>
+                    </div>
+                </div>
+                <div id="form" class="card p-3" style="display: none;">
+                    <form method="post" asp-action="AdminAddItem" asp-controller="Pages">
+                        <div class="aspect-ratio-box">
+                            <div class="mb-3">
+                                <label for="ItemName" class="form-label">Name</label>
+                                <input type="text" name="ItemName" class="form-control" id="ItemName" placeholder="Enter name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="rating" class="form-label">Rating</label>
+                                <input type="number" name="Rating" class="form-control" id="rating" placeholder="Enter rating" min="0" max="5" step="0.1">
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price</label>
+                                <input type="number" name="Price" class="form-control" id="price" placeholder="Enter price">
+                            </div>
+                            <div class="mb-3">
+                                <label for="imageSource" class="form-label">Image Link</label>
+                                <input type="text" name="imageSource" class="form-control" id="imageSource" placeholder="Enter image link">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script>
+    const card = document.querySelector('#card');
+    const form = document.querySelector('#form');
+    const plusIcon = document.querySelector('.fa-plus');
+
+    card.addEventListener('click', () => {
+        card.style.display = 'none';
+        form.style.display = 'block';
+        plusIcon.classList.remove('fa-10x');
+        plusIcon.classList.add('fa-2x');
+    });
+
+
+</script>
+
+
+<script>
+    function deleteItem(button) {
+        var id = $(button).data('id');
+        var url = '@Url.Action("AdminDelete", "Pages")/' + id; // or use '?id=' + id for query string
+        window.location.href = url;
+    }
+
+</script>
