@@ -36,7 +36,7 @@ namespace LoginPageTest.Controllers
             {
                 var tokenraw = await response.Content.ReadAsStringAsync();
                 HttpContext.Session.SetString("JWToken", tokenraw);
-                    return RedirectToAction("AdminHome", "Pages");
+                    return RedirectToAction("Index", "Pages");
               
             }
             else

@@ -21,8 +21,13 @@ namespace LoginPageTest.Controllers
             _httpClient = httpClient;
         }
 
+public IActionResult Index(){
+     var accessToken = HttpContext.Session.GetString("JWToken");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-        [HttpGet]
+    return View();
+}
+     [HttpGet]
         public async Task<IActionResult> AdminHome(string ItemName)
         {
             IEnumerable<Items> products;
@@ -47,17 +52,13 @@ namespace LoginPageTest.Controllers
             return View(products);
         }
 
-
-
-
-
         [HttpPost]
         public async Task<IActionResult> AdminAddItem(Items model)
         {
 
             // do something with the data
 
-            
+
             var accessToken = HttpContext.Session.GetString("JWToken");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await _httpClient.PostAsJsonAsync("https://localhost:7105/api/items/itemAdd", model);
@@ -80,7 +81,6 @@ namespace LoginPageTest.Controllers
         }
 
         [HttpPost]
-
         public async Task<IActionResult> AdminDeleteItem(int id)
         {
             // Use the id to delete the item from your database
@@ -103,6 +103,20 @@ namespace LoginPageTest.Controllers
             var res = JsonConvert.DeserializeObject<List<Items>>(await respose.Content.ReadAsStringAsync());
             return res;
         }
+            static int add=0;
+    [HttpGet]
+        public async Task<List<Items>> moreLoad(int startIndex=0, int count=10)
+        {
+            startIndex=add;
+            var accessToken = HttpContext.Session.GetString("JWToken");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var url = $"https://localhost:7105/api/items/load?startIndex={startIndex}&count={count}";
+            var jsonStr = await _httpClient.GetStringAsync(url);
+             var res = JsonConvert.DeserializeObject<List<Items>>(jsonStr).ToList();
+             add+=9;
+            return res;
+        }
 
         [HttpGet]
 
@@ -116,10 +130,6 @@ namespace LoginPageTest.Controllers
             string jsonStr = await _httpClient.GetStringAsync(url);
             var res = JsonConvert.DeserializeObject<List<Items>>(jsonStr).ToList();
             return res;
-
-
         }
-
-       
     }
 }

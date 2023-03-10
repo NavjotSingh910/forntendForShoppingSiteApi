@@ -1,0 +1,71 @@
+
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout1";
+}
+
+
+<div class="wid">
+    <div class="container mt-4">
+        <div class="row" id="products"></div></div></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var url = '@Url.Action("moreLoad", "pages")';
+
+            function loadImages() {
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function(products) {
+                    var $products = $('#products');
+
+                    $.each(products, function(index, item) {
+                        var html = '<div class="col-md-4 mb-4">' +
+               '<div class="card">' +
+                   '<div class="aspect-ratio-box">' +
+                       '<img class="card-img-top img-fluid rounded-top" src="'+ item.imageSource+'" alt="Product 1">' +
+                   '</div>' +
+
+                   '<div class="card-body">' +
+                       '<h4 class="card-title">'+ item.itemName+'</h4>' +
+                       '<p class="card-text">'+ item.price +'</p>' +
+                       '<small class="text-muted">'+item.rating +' stars</small>' +
+                       '<div class="d-flex justify-content-between align-items-center">' +
+                           '<div class="d-flex justify-content-end">' +
+                               '<form method="post" action="@Url.Action("AdminDeleteItem", "Pages")">' +
+                                   '<input type="hidden" name="id" value="'+ item.Id +'" />' +
+                                   '<button type="submit" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash-alt"></i></button>' +
+                               '</form>' +
+                           '</div>' +
+                           '<button class="btn btn-primary">Add to Cart</button>' +
+                       '</div>' +
+                   '</div>' +
+               '</div>' +
+           '</div>';
+
+
+                        $products.append(html);
+                      
+                    });
+                },
+                error: function() {
+                    console.log('Error loading products.');
+                }
+            });
+            }
+            loadImages()
+            window.addEventListener('scroll',()=>{
+              if(window.scrollY+window.innerHeight+400>=document.documentElement.scrollHeight){
+                  console.log(window.scrollY+window.innerHeight)
+                console.log(document.documentElement.scrollHeight)
+
+            loadImages()
+              }
+            })
+        });
+    </script>
+
