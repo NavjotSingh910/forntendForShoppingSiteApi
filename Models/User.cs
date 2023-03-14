@@ -17,10 +17,16 @@ namespace LoginPageTest.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-        
+
         [Required(ErrorMessage = "Please Enter Email..")]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        public string status { get; set; } = "Pending";
+
+        [Required]
+        public string Role { get; set; } = "User";
 
     }
 }

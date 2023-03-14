@@ -6,9 +6,12 @@ using NuGet.Common;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text.Json;
+using System.Text;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using System.Text.Json;
+using System.Net.Http.Json;
 
 namespace LoginPageTest.Controllers
 {
@@ -21,13 +24,15 @@ namespace LoginPageTest.Controllers
             _httpClient = httpClient;
         }
 
-public IActionResult Index(){
-     var accessToken = HttpContext.Session.GetString("JWToken");
+        public async Task<IActionResult> Index()
+        {
+            var accessToken = HttpContext.Session.GetString("JWToken");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-    return View();
-}
-     [HttpGet]
+            return View();
+
+        }
+        [HttpGet]
         public async Task<IActionResult> AdminHome(string ItemName)
         {
             IEnumerable<Items> products;
@@ -63,8 +68,11 @@ public IActionResult Index(){
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await _httpClient.PostAsJsonAsync("https://localhost:7105/api/items/itemAdd", model);
 
+            // convert the model to JSON
+            var json = System.Text.Json.JsonSerializer.Serialize(model);
 
-
+            // do something with the JSON string
+            Console.WriteLine(json);
 
             if (response.IsSuccessStatusCode)
             {
@@ -88,7 +96,7 @@ public IActionResult Index(){
             var idd = id;
             var accessToken = HttpContext.Session.GetString("JWToken");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var response = await _httpClient.PostAsJsonAsync("https://localhost:7105/api/items/itemDelete",id);
+            var response = await _httpClient.PostAsJsonAsync("https://localhost:7105/api/items/itemDelete", id);
             return RedirectToAction("AdminHome");
         }
 
@@ -103,18 +111,18 @@ public IActionResult Index(){
             var res = JsonConvert.DeserializeObject<List<Items>>(await respose.Content.ReadAsStringAsync());
             return res;
         }
-            static int add=0;
-    [HttpGet]
-        public async Task<List<Items>> moreLoad(int startIndex=0, int count=10)
+        static int add = 0;
+        [HttpGet]
+        public async Task<List<Items>> moreLoad(int startIndex = 0, int count = 10)
         {
-            startIndex=add;
+            startIndex = add;
             var accessToken = HttpContext.Session.GetString("JWToken");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             var url = $"https://localhost:7105/api/items/load?startIndex={startIndex}&count={count}";
             var jsonStr = await _httpClient.GetStringAsync(url);
-             var res = JsonConvert.DeserializeObject<List<Items>>(jsonStr).ToList();
-             add+=9;
+            var res = JsonConvert.DeserializeObject<List<Items>>(jsonStr).ToList();
+            add += 9;
             return res;
         }
 
@@ -122,14 +130,50 @@ public IActionResult Index(){
 
         public async Task<List<Items>> GetProducts()
         {
-            var accessToken= HttpContext.Session.GetString("JWToken");
+            var accessToken = HttpContext.Session.GetString("JWToken");
             var url = baseUrl;
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",accessToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             string jsonStr = await _httpClient.GetStringAsync(url);
             var res = JsonConvert.DeserializeObject<List<Items>>(jsonStr).ToList();
             return res;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AdminApprove()
+        {
+            IEnumerable<User> products;
+
+            // No search query submitted, get all products
+            products = await GetUsers();
+
+            return View(products);
+        }
+        [HttpGet]
+
+        public async Task<List<User>> GetUsers()
+        {
+            var accessToken = HttpContext.Session.GetString("JWToken");
+            var url = "https://localhost:7105/api/user/GetUsers";
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            string jsonStr = await _httpClient.GetStringAsync(url);
+            var res = JsonConvert.DeserializeObject<List<User>>(jsonStr).ToList();
+            return res;
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditAsync(int id, string status)
+        {
+            var accessToken = HttpContext.Session.GetString("JWToken");
+            var url = $"https://localhost:7105/api/User/EditStatus?id={id}&status={status}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var content = new StringContent("", Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(url, content);
+            return RedirectToAction("AdminApprove");
+        }
+
     }
 }

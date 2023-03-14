@@ -31,7 +31,8 @@ namespace LoginPageTest.Controllers
 
         [HttpPost]
         public async Task<IActionResult> RegistrationPage(User user)
-        { 
+        {
+
             var response = await _httpClient.PostAsJsonAsync("https://localhost:7105/api/user/register", user);
 
             if (response.IsSuccessStatusCode)
