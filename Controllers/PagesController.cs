@@ -164,7 +164,7 @@ namespace LoginPageTest.Controllers
             return res;
         }
         [HttpGet]
-        public async Task<IActionResult> EditAsync(int id, string status)
+        public async Task<IActionResult> Edit(String id, string status)
         {
             var accessToken = HttpContext.Session.GetString("JWToken");
             var url = $"https://localhost:7105/api/User/EditStatus?id={id}&status={status}";

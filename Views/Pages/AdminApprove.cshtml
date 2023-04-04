@@ -1,0 +1,76 @@
+@model List<User>
+
+@{
+  ViewData["Title"] = "Home Page  Admin";
+  Layout = "_Layout1";
+}
+
+
+</style>
+
+@section Navbar {
+      <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" onclick="location.href='@Url.Action("AdminHome", "Pages")'">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="location.href='@Url.Action("AdminApprove", "Pages")'">Requests</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" action="@Url.Action("AdminHome", "Pages")">
+                <input class="form-control mr-sm-2" name="ItemName" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+}
+<div class="container" style="margin: 0 auto;">
+  <table class="table table-responsive table-striped table-inverse table-responsive">
+    <thead class="thead-inverse">
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Password</th>
+      <th>Email</th>
+      <th>Status</th>
+      <th>Role</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+      @foreach (var user in Model)
+      {
+        <tr>
+          <td scope="row">@user.Id</td>
+          <td>@user.Username</td>
+          <td>@user.Password</td>
+          <td>@user.Email</td>
+          <td>@user.status</td>
+          <td>@user.Role</td>
+          @{
+            string buttonName,ChangeStatus,buttonColor;
+            if (user.status == "Pending")
+            {
+              buttonName = "Approve";
+              ChangeStatus="Active";
+              buttonColor="btn-success";
+            }
+            else if (user.status == "Active")
+            {
+              buttonName = "Block";
+              ChangeStatus="Blocked";
+              buttonColor="btn-danger";
+            }
+            else
+            {
+              buttonName = "Active";
+              ChangeStatus="Active";
+              buttonColor="btn-warning";
+            }
+          }
+          <td>
+            <button type="button" class="btn @buttonColor btn-block" onclick="location.href='@Url.Action("Edit", "Pages", new { id = user.Id , status=@ChangeStatus})'">@buttonName</button>
+</td>
+        </tr>
+      }
+  </tbody>
+</table>
+</div>

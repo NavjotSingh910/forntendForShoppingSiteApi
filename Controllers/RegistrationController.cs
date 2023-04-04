@@ -1,4 +1,5 @@
 ﻿using LoginPageTest.Data;
+using LoginPageTest.Dto;
 using LoginPageTest.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace LoginPageTest.Controllers
         }
 
         [HttpGet]
-        
+
         public IActionResult RegistrationPage()
         {
             return View();
@@ -30,7 +31,7 @@ namespace LoginPageTest.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrationPage(User user)
+        public async Task<IActionResult> RegistrationPage(ResgisterUser user)
         {
 
             var response = await _httpClient.PostAsJsonAsync("https://localhost:7105/api/user/register", user);
@@ -48,5 +49,6 @@ namespace LoginPageTest.Controllers
                 return View();
             }
         }
+
     }
 }

@@ -3,14 +3,7 @@
     ViewData["Title"] = "Login Page";
 }
 
-<div class="d-lg-flex half">
 
-    <div class="bg order-1 order-md-2 bgimage" style="
-    box-shadow: 0px 0px 19px 4px lightgrey;"></div>
-    <div class="contents order-2 order-md-1">
-    <div class="container">
-        <div class="row align-items-center justify-content-center">
-            <div class="col-md-7">
                 <h3>Login to <strong>Homely Essentials</strong></h3>
                 <p class="mb-4">Your ultimate destination for all things home, "Homely Essentials" is a shopping website offering an extensive selection of high-quality products to elevate your living space.</p>
 
@@ -42,7 +35,7 @@
                             <input type="checkbox" checked="checked" />
                             <div class="control__indicator"></div>
                         </label>
-                        <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span>
+                        <span class="ml-auto"><a  onclick="location.href='@Url.Action("Index", "PasswordReset")'" class="forgot-pass">Forgot Password</a></span>
                     </div>
 
                     <input type="submit" value="Log In" class="btn btn-block btn-primary" />
@@ -50,16 +43,4 @@
                     <button type="button" class="btn btn-block btn-secondary" onclick="location.href='@Url.Action("RegistrationPage", "Registration")'">Go to Registration</button>
 
                 </form>
-            </div>
-        </div>
-    </div>
-
-    </div>
-    </div>
-
-
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
-
+     

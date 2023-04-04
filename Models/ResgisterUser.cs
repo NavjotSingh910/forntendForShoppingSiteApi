@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace LoginPageTest.Models
 {
 
-    public class User
+    public class ResgisterUser
     {
-        [Key]
-        public String Id { get; set; }
 
         [Required(ErrorMessage = "Please Enter UserName..")]
         [Display(Name = "User Name")]
@@ -21,12 +19,6 @@ namespace LoginPageTest.Models
         [Required(ErrorMessage = "Please Enter Email..")]
         [Display(Name = "Email")]
         public string Email { get; set; }
-
-        [Required]
-        public string status { get; set; } = "Pending";
-
-        [Required]
-        public string Role { get; set; } = "User";
 
     }
 }
